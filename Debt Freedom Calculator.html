@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Debt Freedom Calculator — Driven Mind Solutions</title>
+  <style>
+    header h1, header p {font-family: Arial, sans-serif;}
+    :root{--bg:#0f1724;--card:#0b1220;--accent:#06b6d4;--muted:#94a3b8;--success:#16a34a;--danger:#ef4444}
+    *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif}
+    body{margin:0;background:linear-gradient(180deg,#071026 0%, #071b2a 100%);color:#e6eef8;min-height:100vh;padding:24px}
+    .wrap{max-width:1100px;margin:0 auto}
+    header.top{display:flex;align-items:center;gap:16px;margin-bottom:18px}
+    h1{font-size:20px;margin:0}
+    .grid{display:grid;grid-template-columns:1fr 420px;gap:18px}
+    .card{background:rgba(255,255,255,0.03);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
+    label{display:block;font-size:13px;margin-bottom:6px;color:var(--muted)}
+    input[type=text], input[type=number], select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);background:transparent;color:inherit}
+    .row{display:flex;gap:12px}
+    .btn{background:var(--accent);color:#022;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+    .small{font-size:13px;color:var(--muted)}
+    table{width:100%;border-collapse:collapse;margin-top:10px}
+    th,td{padding:8px;border-bottom:1px dashed rgba(255,255,255,0.03);text-align:right;font-size:13px}
+    th{color:var(--muted);text-align:left}
+    .status{display:flex;align-items:center;gap:10px}
+    .pill{padding:6px 10px;border-radius:999px;font-weight:700}
+    .danger{background:rgba(239,68,68,0.12);color:var(--danger)}
+    .warn{background:rgba(245,158,11,0.08);color:#f59e0b}
+    .ok{background:rgba(16,185,129,0.08);color:var(--success)}
+    .muted-block{color:var(--muted);font-size:13px}
+    .flex-between{display:flex;justify-content:space-between;align-items:center}
+    .scenarios{display:flex;gap:8px}
+    .scenario{flex:1;padding:8px;border-radius:10px;background:rgba(255,255,255,0.02)}
+    footer{margin-top:16px;color:var(--muted);font-size:13px}
+    .download-section{display:flex;gap:8px;margin-top:10px}
+    .download-section button{padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
+    pre{white-space:pre-wrap;color:var(--muted);font-size:13px}
+    @media (max-width:900px){.grid{grid-template-columns:1fr;}.row{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <header style="text-align:center; padding:20px; background:#111; color:#fff; margin-bottom:20px; border-radius:8px;">
+    <h1 style="margin:0; font-size:28px; letter-spacing:1px;">Driven Mind Solutions</h1>
+    <p style="margin:0; font-size:14px; opacity:0.8;">Smarter System, Real Results</p>
+  </header>
+
+  <div class="wrap">
+    <header class="top">
+      <div style="width:48px;height:48px;background:linear-gradient(135deg,#0ea5a4,#06b6d4);border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#012">DF</div>
+      <div>
+        <h1>Debt Freedom Calculator</h1>
+        <div class="small">Simple, practical calculator to plan paying down high-interest debt. Enter your numbers and explore 3 realistic scenarios.</div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Left: Inputs and controls -->
+      <div>
+        <div class="card">
+          <h3>1. Debt Overview</h3>
+          <div class="row" style="margin-bottom:12px">
+            <div style="flex:1">
+              <label>Principal (₱)</label>
+              <input id="principal" type="number" min="0" value="52000">
+            </div>
+            <div style="width:160px">
+              <label>Interest rate (% / month)</label>
+              <input id="rate" type="number" step="0.01" min="0" value="5">
+            </div>
+          </div>
+
+          <h3>2. Income & Survival Budget</h3>
+          <div class="row" style="margin-bottom:8px">
+            <div style="flex:1">
+              <label>Salary (₱/month)</label>
+              <input id="salary" type="number" value="15000">
+            </div>
+            <div style="flex:1">
+              <label>Other income (₱/month)</label>
+              <input id="otherIncome" type="number" value="0">
+            </div>
+          </div>
+
+          <div style="margin-top:8px;margin-bottom:8px" class="small">Survival expenses (enter totals). The app will subtract these from income to find disposable cash.</div>
+          <div class="row" style="margin-bottom:8px">
+            <div style="flex:1">
+              <label>Food (₱)</label>
+              <input id="food" type="number" value="4000">
+            </div>
+            <div style="flex:1">
+              <label>Transport (₱)</label>
+              <input id="transport" type="number" value="1500">
+            </div>
+          </div>
+          <div class="row" style="margin-bottom:8px">
+            <div style="flex:1">
+              <label>Utilities share (₱)</label>
+              <input id="utilities" type="number" value="500">
+            </div>
+            <div style="flex:1">
+              <label>Load / Data (₱)</label>
+              <input id="load" type="number" value="300">
+            </div>
+          </div>
+          <div class="row" style="margin-bottom:12px">
+            <div style="flex:1">
+              <label>Child / family (₱)</label>
+              <input id="family" type="number" value="1500">
+            </div>
+            <div style="flex:1">
+              <label>Misc / Emergency (₱)</label>
+              <input id="misc" type="number" value="1200">
+            </div>
+          </div>
+
+          <div class="flex-between" style="margin-bottom:12px">
+            <div>
+              <button class="btn" onclick="calculateAll()">Calculate</button>
+            </div>
+            <div class="muted-block">Tip: click Calculate after changing numbers.</div>
+          </div>
+
+          <div id="overviewResults"></div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h3>3. Scenarios & Payment Plans</h3>
+          <div class="small">The app suggests 3 scenarios based on disposable cash. You can pick one and see a detailed plan. Or build a custom plan:</div>
+
+          <div style="margin-top:10px" class="scenarios">
+            <div class="scenario" id="scenarioConservative"></div>
+            <div class="scenario" id="scenarioRecommended"></div>
+            <div class="scenario" id="scenarioAggressive"></div>
+          </div>
+
+          <div style="margin-top:12px">
+            <label>Custom plan — either enter desired monthly payment <em>or</em> enter number of months to finish.</label>
+            <div class="row" style="margin-top:6px">
+              <input id="customPayment" type="number" placeholder="Monthly payment (e.g. 5000)">
+              <input id="customMonths" type="number" placeholder="Finish in months (e.g. 12)">
+            </div>
+            <div class="row" style="margin-top:8px">
+              <button class="btn" onclick="buildCustomPlan()">Build Plan</button>
+              <button class="btn" style="background:#0ea5a4" onclick="calculateRequiredPayment()">Suggest Payment for months</button>
+            </div>
+            <div class="small" style="margin-top:8px">If you enter both, the app will prioritize the monthly payment input. If you only enter months, it will calculate the required payment to finish in that many months.</div>
+          </div>
+
+          <div style="margin-top:12px" id="planButtons"></div>
+
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h3>4. Weekly & Monthly Status</h3>
+          <div id="statusBox" class="muted-block">After you click Calculate you'll see status here: monthly interest, disposable income, urgency, and friendly recommendations.</div>
+        </div>
+
+      </div>
+
+      <!-- Right: Summary and tables -->
+      <div>
+        <div class="card">
+          <div class="flex-between">
+            <h3>Quick Summary</h3>
+            <div id="urgencyPill" class="pill ok">No data</div>
+          </div>
+          <div id="summaryText" style="margin-top:10px;color:var(--muted)">Enter values and click Calculate to see a plain-language summary of your debt situation.</div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3>Custom Payment Plan (table)</h3>
+          <div id="amortTableWrap">
+            <div class="small">The table below shows interest, principal paid, and remaining balance for each month using the chosen payment amount or target months.</div>
+            <div id="amortTable"></div>
+            <!-- text version for export -->
+            <pre id="customPlanOutput" style="display:block; margin-top:10px; max-height:220px; overflow:auto"></pre>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:12px">
+          <h3>Survival Budget Recommendation</h3>
+          <div id="budgetRec" class="small"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="download-section">
+      <button onclick="downloadCSV()">Download CSV</button>
+      <button onclick="downloadExcel()">Download Excel</button>
+      <button onclick="downloadPDF()">Download PDF</button>
+    </div>
+
+    <footer>Built for clarity — no accounting jargon. If you want the file exported (CSV or printable PDF), tell me and I'll add export buttons.</footer>
+  </div>
+
+<script>
+// helpers
+function moneyFmt(n){return '₱'+Number(n).toLocaleString(undefined,{maximumFractionDigits:0})}
+function num(v){return Number(v) || 0}
+
+function getInputs(){
+  const p = num(document.getElementById('principal').value);
+  const r = num(document.getElementById('rate').value);
+  const salary = num(document.getElementById('salary').value);
+  const other = num(document.getElementById('otherIncome').value);
+  const food = num(document.getElementById('food').value);
+  const transport = num(document.getElementById('transport').value);
+  const utilities = num(document.getElementById('utilities').value);
+  const load = num(document.getElementById('load').value);
+  const family = num(document.getElementById('family').value);
+  const misc = num(document.getElementById('misc').value);
+  const survival = food+transport+utilities+load+family+misc;
+  return {p,r,salary,other,food,transport,utilities,load,family,misc,survival};
+}
+
+function calculateAll(){
+  const I = getInputs();
+  const monthlyInterest = I.p * (I.r/100);
+  const income = I.salary + I.other;
+  const disposable = Math.max(0, income - I.survival);
+
+  // urgency
+  let urgency='Low', urgencyClass='ok';
+  if(monthlyInterest >= income*0.3 || monthlyInterest>5000) {urgency='High';urgencyClass='danger'}
+  else if(monthlyInterest >= income*0.15) {urgency='Medium';urgencyClass='warn'}
+
+  document.getElementById('urgencyPill').textContent = urgency;
+  document.getElementById('urgencyPill').className = 'pill '+(urgencyClass==='danger'?'danger':urgencyClass==='warn'?'warn':'ok');
+
+  const c1 = Math.max(Math.ceil(monthlyInterest), Math.round(disposable*0.30));
+  const c2 = Math.max(Math.ceil(monthlyInterest), Math.round(disposable*0.50));
+  const c3 = Math.max(Math.ceil(monthlyInterest), Math.round(disposable*0.70));
+
+  const overviewHtml = `\n    <div class="small"><strong>Principal:</strong> ${moneyFmt(I.p)}<br>\n    <strong>Rate:</strong> ${I.r}% / month<br>\n    <strong>Monthly interest:</strong> ${moneyFmt(monthlyInterest)}<br>\n    <strong>Income (total):</strong> ${moneyFmt(income)}<br>\n    <strong>Survival expenses:</strong> ${moneyFmt(I.survival)}<br>\n    <strong>Disposable cash:</strong> ${moneyFmt(disposable)}<br>\n    </div>\n  `;
+  document.getElementById('overviewResults').innerHTML = overviewHtml;
+
+  // hidden export fields
+  setHiddenText('debtOverviewOutput', `Principal: ${moneyFmt(I.p)} | Rate: ${I.r}% | Monthly interest: ${moneyFmt(monthlyInterest)}`);
+  setHiddenText('interestBreakdownOutput', `Monthly interest: ${moneyFmt(monthlyInterest)}`);
+  setHiddenText('urgencyOutput', urgency);
+
+  // status & summary
+  document.getElementById('statusBox').innerHTML = `Monthly interest is <strong>${moneyFmt(monthlyInterest)}</strong>. Disposable cash after survival needs is <strong>${moneyFmt(disposable)}</strong>.`;
+
+  let assessment = '';
+  if(urgency==='High') assessment = 'This is URGENT: interest is a large portion of your income. Prioritize paying as much as possible or negotiate lower rate.';
+  else if(urgency==='Medium') assessment = 'This is risky: try to pay aggressively and avoid new loans.';
+  else assessment = 'Manageable but act: allocate part of your disposable income to principal to finish sooner.';
+
+  const summary = `You owe ${moneyFmt(I.p)} at ${I.r}% monthly. At this rate your debt grows by ${moneyFmt(monthlyInterest)} every month if unpaid. ${assessment}`;
+  document.getElementById('summaryText').innerText = summary;
+  setHiddenText('assessmentOutput', assessment);
+  setHiddenText('summaryOutput', summary);
+  setHiddenText('survivalBudgetOutput', `Income: ${moneyFmt(income)} | Survival: ${moneyFmt(I.survival)} | Disposable: ${moneyFmt(disposable)}`);
+
+  // scenarios
+  document.getElementById('scenarioConservative').innerHTML = `<strong>Conservative</strong><div class="small">30% of disposable (min: interest)</div><div style="margin-top:8px;font-weight:800">${moneyFmt(c1)}/mo</div><div class="small" style="margin-top:8px">${calcFinishText(I.p,I.r,c1)}</div><div style="margin-top:8px"><button class="btn" onclick="applyScenario(${c1})">Select</button></div>`;
+  document.getElementById('scenarioRecommended').innerHTML = `<strong>Recommended</strong><div class="small">50% of disposable (min: interest)</div><div style="margin-top:8px;font-weight:800">${moneyFmt(c2)}/mo</div><div class="small" style="margin-top:8px">${calcFinishText(I.p,I.r,c2)}</div><div style="margin-top:8px"><button class="btn" onclick="applyScenario(${c2})">Select</button></div>`;
+  document.getElementById('scenarioAggressive').innerHTML = `<strong>Aggressive</strong><div class="small">70% of disposable (min: interest)</div><div style="margin-top:8px;font-weight:800">${moneyFmt(c3)}/mo</div><div class="small" style="margin-top:8px">${calcFinishText(I.p,I.r,c3)}</div><div style="margin-top:8px"><button class="btn" onclick="applyScenario(${c3})">Select</button></div>`;
+
+  document.getElementById('planButtons').innerHTML = `<div class=\"row\"><button class=\"btn\" onclick=\"applyScenario(${c1})\">Use Conservative ${moneyFmt(c1)}</button><button class=\"btn\" style=\"background:#0ea5a4\" onclick=\"applyScenario(${c2})\">Use Recommended ${moneyFmt(c2)}</button><button class=\"btn\" style=\"background:#0b84ff\" onclick=\"applyScenario(${c3})\">Use Aggressive ${moneyFmt(c3)}</button></div>`;
+
+  const recommendedBudget = `From your total income ${moneyFmt(income)}, survival expenses are ${moneyFmt(I.survival)} leaving ${moneyFmt(disposable)} disposable. Try to allocate at least half of disposable to debt until it's gone. Keep a small emergency buffer (₱500–₱1,500).`;
+  document.getElementById('budgetRec').innerText = recommendedBudget;
+}
+
+function setHiddenText(id, text){
+  let el = document.getElementById(id);
+  if(!el){ el = document.createElement('div'); el.id = id; el.style.display='none'; document.body.appendChild(el); }
+  el.innerText = text;
+}
+
+function calcFinishText(principal, rate, payment){
+  if(payment<=0) return 'No payment entered.';
+  const monthlyInterest = principal*(rate/100);
+  if(payment <= monthlyInterest) return 'Payment ≤ monthly interest — balance WILL NOT fall.';
+  let bal=principal; let m=0;
+  while(bal>0 && m<600){
+    const interest = bal*(rate/100);
+    const principalPaid = Math.min(payment - interest, bal);
+    bal = bal - principalPaid;
+    m++;
+  }
+  if(bal<=0) return `Estimated payoff in ${m} months (${Math.floor(m/12)}y ${m%12}m)`;
+  return `Large term: would still owe ${moneyFmt(Math.ceil(bal))} after ${m} months`;
+}
+
+function applyScenario(amount){
+  document.getElementById('customPayment').value = amount;
+  buildCustomPlan();
+}
+
+// Build plan: if monthly payment provided, simulate until months or zero. If months provided but no payment, calculate required payment and simulate.
+function buildCustomPlan(){
+  const I = getInputs();
+  const principal = I.p;
+  const ratePercent = I.r;
+  const rate = ratePercent/100;
+  let payment = num(document.getElementById('customPayment').value);
+  const monthsInput = parseInt(document.getElementById('customMonths').value) || 0;
+
+  // If no payment but months provided => compute required payment using amortization formula
+  if((!payment || payment<=0) && monthsInput>0){
+    const n = monthsInput;
+    if(rate===0){ payment = principal / n; }
+    else {
+      // standard annuity payment formula: P * r*(1+r)^n / ((1+r)^n -1)
+      const factor = Math.pow(1+rate, n);
+      payment = (principal * rate * factor) / (factor - 1);
+      payment = Math.ceil(payment); // round up to cover
+    }
+    document.getElementById('customPayment').value = Math.round(payment);
+  }
+
+  if(!payment || payment<=0){ alert('Enter a valid monthly payment or number of months.'); return; }
+
+  // simulate month by month until paid or up to 600 months
+  let balance = principal; let month = 0; let rows = [];
+  while(balance>0 && month<600){
+    month++;
+    const interest = balance * rate;
+    let principalPaid = payment - interest;
+    if(principalPaid < 0){ alert('Payment is less than monthly interest — balance will not reduce. Increase payment.'); return; }
+    if(principalPaid > balance) principalPaid = balance;
+    const actualPayment = interest + principalPaid;
+    balance = Math.max(0, balance - principalPaid);
+    rows.push({month, actualPayment, interest, principalPaid, balance});
+    if(monthsInput>0 && month>=monthsInput) break; // stop at user-specified months if requested
+  }
+
+  // Render table and text
+  let html = '<table><thead><tr><th>Month</th><th>Payment</th><th>Interest</th><th>Principal</th><th>Remaining</th></tr></thead><tbody>';
+  const textLines = [];
+  rows.forEach(r=>{
+    html += `<tr><td style=\"text-align:left\">${r.month}</td><td>${moneyFmt(r.actualPayment)}</td><td>${moneyFmt(r.interest)}</td><td>${moneyFmt(r.principalPaid)}</td><td>${moneyFmt(r.balance)}</td></tr>`;
+    textLines.push(`Month ${r.month}: Payment ${moneyFmt(r.actualPayment)} | Interest ${moneyFmt(r.interest)} | Principal ${moneyFmt(r.principalPaid)} | Remaining ${moneyFmt(r.balance)}`);
+  });
+  html += '</tbody></table>';
+  document.getElementById('amortTable').innerHTML = html;
+  document.getElementById('customPlanOutput').innerText = textLines.join('\n');
+
+  // store hidden outputs for export
+  setHiddenText('paymentPlanOutput', `Monthly payment chosen: ${moneyFmt(payment)} | Months shown: ${rows.length}`);
+  setHiddenText('customPlanOutput', document.getElementById('customPlanOutput').innerText);
+
+  // update summary/status
+  const monthlyInterest = principal * rate;
+  const income = I.salary + I.other;
+  const disposable = Math.max(0, income - I.survival);
+  const finishText = calcFinishText(principal, ratePercent, payment);
+  const rec = `You chose ${moneyFmt(payment)}/month. Monthly interest is ${moneyFmt(Math.round(monthlyInterest))}. Disposable cash: ${moneyFmt(disposable)}. ${finishText}.`;
+  document.getElementById('summaryText').innerText = rec + ' ' + document.getElementById('summaryText').innerText;
+  document.getElementById('statusBox').innerHTML = `<div><strong>Payment:</strong> ${moneyFmt(payment)}/month<br><strong>Estimated finish:</strong> ${finishText}</div>`;
+}
+
+function calculateRequiredPayment(){
+  const months = parseInt(document.getElementById('customMonths').value) || 0;
+  if(months<=0){ alert('Enter target months to get suggested payment.'); return; }
+  // temporarily compute payment and show in input
+  const I = getInputs();
+  const principal = I.p; const rate = I.r/100;
+  let payment = 0;
+  if(rate===0) payment = principal / months;
+  else{
+    const factor = Math.pow(1+rate, months);
+    payment = (principal * rate * factor) / (factor - 1);
+  }
+  document.getElementById('customPayment').value = Math.ceil(payment);
+  buildCustomPlan();
+}
+
+// Export helpers: gather fields
+function generateSummaryData(){
+  const k = id => (document.getElementById(id)?.innerText) || '';
+  const monthsLabel = (document.getElementById('customMonths').value) || '';
+  return [
+    'DEBT OVERVIEW', k('debtOverviewOutput'),
+    'INTEREST BREAKDOWN', k('interestBreakdownOutput'),
+    'URGENCY LEVEL', k('urgencyOutput'),
+    'ASSESSMENT & RECOMMENDATION', k('assessmentOutput'),
+    'SUMMARY', k('summaryOutput'),
+    `PAYMENT PLAN ${monthsLabel ? `(${monthsLabel} months)` : ''}`, k('paymentPlanOutput'),
+    'SURVIVAL BUDGET', k('survivalBudgetOutput'),
+    'CUSTOM PAYMENT PLAN', k('customPlanOutput')
+  ].filter(Boolean).join('\n\n');
+}
+
+function downloadCSV(){
+  const data = generateSummaryData();
+  const blob = new Blob([data], { type: 'text/csv' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'debt_report.csv'; a.click(); URL.revokeObjectURL(url);
+}
+
+function downloadExcel(){
+  // basic .xls wrapper for Excel compatibility
+  const data = generateSummaryData();
+  const blob = new Blob([data], { type: 'application/vnd.ms-excel' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = 'debt_report.xls'; a.click(); URL.revokeObjectURL(url);
+}
+
+function downloadPDF(){
+  const raw = generateSummaryData();
+  const lines = raw.split('\n');
+  let html = '<html><head><title>Debt Report PDF</title>'+
+             '<style>body{font-family:Arial,Helvetica,sans-serif;padding:20px;color:#111}h2{margin-top:18px;border-bottom:1px solid #ddd;padding-bottom:6px}pre{white-space:pre-wrap;font-size:13px}</style>'+
+             '</head><body>';
+  // group by section headings (ALL CAPS words)
+  let cur = null; let buf = [];
+  lines.forEach(line=>{
+    if(!line.trim()) return;
+    if(line===line.toUpperCase() && !line.includes(':')){
+      if(cur){ html += `<h2>${cur}</h2><pre>${buf.join('\n')}</pre>`; buf=[]; }
+      cur = line;
+    } else {
+      buf.push(line);
+    }
+  });
+  if(cur){ html += `<h2>${cur}</h2><pre>${buf.join('\n')}</pre>`; }
+  html += '</body></html>';
+  const win = window.open('', '_blank');
+  win.document.write(html);
+  win.document.close();
+  setTimeout(()=>win.print(),300);
+}
+
+// init
+calculateAll();
+</script>
+</body>
+</html>
